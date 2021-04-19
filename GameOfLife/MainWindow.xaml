@@ -5,8 +5,27 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GameOfLife"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="554.024" Width="800">
     <Grid>
-        
+        <Canvas x:Name="can_gamefield" HorizontalAlignment="Left" Height="500" Margin="182,10,0,0" VerticalAlignment="Top" Width="600"/>
+        <Button x:Name="btn_create" Content="Spielfeld Erstellen" HorizontalAlignment="Left" Margin="10,41,0,0" VerticalAlignment="Top" Width="167" Click="btn_create_Click"/>
+        <Label x:Name="lbl_title" Content="Game of Life" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="167" FontWeight="Bold"/>
+        <Label x:Name="lbl_height" Content="Höhe" HorizontalAlignment="Left" Margin="10,125,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.129,0.176" Width="167"/>
+        <Label x:Name="lbl_width" Content="Breite" HorizontalAlignment="Left" Margin="10,66,0,0" VerticalAlignment="Top" Width="167"/>
+        <TextBox x:Name="tb_width" HorizontalAlignment="Left" Height="23" Margin="10,97,0,0" TextWrapping="Wrap" Text="00" VerticalAlignment="Top" Width="167"/>
+        <TextBox x:Name="tb_hight" HorizontalAlignment="Left" Height="23" Margin="10,156,0,0" TextWrapping="Wrap" Text="00" VerticalAlignment="Top" Width="167"/>
+        <Label x:Name="lbl_Info" Content="Spiel Info" HorizontalAlignment="Left" Margin="10,210,0,0" VerticalAlignment="Top" Width="167" FontWeight="Bold"/>
+        <Label x:Name="lbl_headerGen" Content="Generation" HorizontalAlignment="Left" Margin="21,241,0,0" VerticalAlignment="Top" Width="105"/>
+        <Label x:Name="lbl_gen" Content="00" HorizontalAlignment="Left" Margin="131,241,0,0" VerticalAlignment="Top" Width="46"/>
+        <Label x:Name="lbl_headercountcells" Content="Lebende Zellen" HorizontalAlignment="Left" Margin="21,267,0,0" VerticalAlignment="Top" Width="105"/>
+        <Label x:Name="lbl_countCells" Content="00" HorizontalAlignment="Left" Margin="131,267,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.459,0.532" Width="46"/>
+        <Label x:Name="lbl_gamesettings" Content="Spieleinstellung" HorizontalAlignment="Left" Margin="10,314,0,0" VerticalAlignment="Top" Width="167" FontWeight="Bold"/>
+        <Button x:Name="btn_play_pause" Content="Play" HorizontalAlignment="Left" Margin="76,345,0,0" VerticalAlignment="Top" Width="44"/>
+        <Button x:Name="btn_reset" Content="Reset" HorizontalAlignment="Left" Margin="21,345,0,0" VerticalAlignment="Top" Width="44"/>
+        <Button x:Name="btn_nextGen" Content="Next" HorizontalAlignment="Left" Margin="131,345,0,0" VerticalAlignment="Top" Width="44" RenderTransformOrigin="1.149,-0.812"/>
+        <Button x:Name="btn_clear" Content="Löschen" HorizontalAlignment="Left" Margin="21,377,0,0" VerticalAlignment="Top" Width="154"/>
+        <Label x:Name="lbl_headerhighScore" Content="Highscore" HorizontalAlignment="Left" Margin="10,444,0,0" VerticalAlignment="Top" Width="116" FontWeight="Bold"/>
+        <Label x:Name="lbl_highscore" Content="00" HorizontalAlignment="Left" Margin="131,444,0,0" VerticalAlignment="Top" Width="46"/>
+
     </Grid>
 </Window>

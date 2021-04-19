@@ -8,18 +8,18 @@ namespace GameOfLife
 {
     class Game
     {
-        private int Gen { get; set; }
-        private int CellCount { get; set; }
-        private int Height { get; set; }
-        private int Width { get; set; }
+        private int gen { get; set; }
+        private int cellCount { get; set; }
+        private int height { get; set; }
+        private int width { get; set; }
         //private cell[] {get;set;}
-        private int Interval { get; set; }
-        private bool TorusRules { get; set; }
+        private int interval { get; set; }
+        private bool torusRules { get; set; }
 
 
         public void CheckCell()
         {
-            if (!TorusRules)
+            if (!torusRules)
             {
 
             }
@@ -28,7 +28,7 @@ namespace GameOfLife
 
         public void CheckCellTorus()
         {
-            if (TorusRules)
+            if (torusRules)
             {
 
             }
@@ -37,7 +37,7 @@ namespace GameOfLife
 
         public void NextGen()
         {
-            this.Gen += 1;
+            this.gen += 1;
 
         }
 
