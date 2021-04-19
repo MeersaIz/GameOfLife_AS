@@ -19,21 +19,33 @@ namespace GameOfLife
             this.posY = posY;
         }
 
-        public static bool GetStatus()
+        public void ChangeStatus()
+        {
+            if (this.status == false) 
+            {
+                this.status = true;
+            }
+            else
+            {
+                this.status = false;
+            }
+        }
+
+        public bool GetStatus()
         {
             return this.status;
         }
 
-        public static void SetStatus(bool status)
+        public void SetStatus(bool status)
         {
             this.status = status;
         }
 
-        public static int GetPosY()
+        public int GetPosY()
         {
             return this.posY;
         }
-        public static int GetposX()
+        public int GetposX()
         {
             return this.posX;
         }
