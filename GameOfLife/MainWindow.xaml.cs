@@ -57,18 +57,18 @@ namespace GameOfLife
         private void btn_create_Click(object sender, RoutedEventArgs e)
         {
             //Vars
-            int width;
-            int height;
+            int w;
+            int h;
 
             //Holen der Benutzer-Eingaben
-            width = Convert.ToInt32(tb_width.Text);
-            height = Convert.ToInt32(tb_hight.Text);
+            w = Convert.ToInt32(tb_width.Text);
+            h = Convert.ToInt32(tb_hight.Text);
 
             //Anpassung für Global Array
-            Cells = new Rectangle[width, height];
+            Cells = new Rectangle[w, h];
 
             //Benutzerdefinierte Spielfeldgröße
-            CreateGameField(width, height);
+            CreateGameField(w, h);
 
         }
 
@@ -240,5 +240,15 @@ namespace GameOfLife
             }
         }
 
+        /// Löschen Button, Setzte Alle Zellen auf Tod (Grau)
+        private void btn_clear_Click(object sender, RoutedEventArgs e)
+        {
+            //Für alle Zellen die Farbe Grau setzten
+            foreach(Rectangle elements in can_gamefield.Children)
+            {
+                elements.Fill = Brushes.Gray;
+            }
+
+        }
     }
 }
