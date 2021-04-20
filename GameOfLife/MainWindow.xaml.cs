@@ -27,9 +27,9 @@ namespace GameOfLife
     public partial class MainWindow : Window
     {
         //Global Vars
-        const int width = 16;
-        const int height = 9;
-        Rectangle[,] Cells = new Rectangle[width, height];
+        int w = 16;
+        int h = 9;
+        Rectangle[,] Cells = new Rectangle[16, 9];
         DispatcherTimer Clock = new DispatcherTimer();
 
         /// Main
@@ -50,15 +50,12 @@ namespace GameOfLife
         /// Methoden Aufruf von Uhr-Ticks Für den Automatischen Spielverlauf
         private void Clock_Tick(object sender, EventArgs e)
         {
-            NextGen();
+            NextGen(width,height);
         }
 
         /// Button zum erzeugen von Benutzerdefinierte Spielfelder
-        private void btn_create_Click(object sender, RoutedEventArgs e)
+        private void btn_create_Click(object sender, RoutedEventArgs e) 
         {
-            //Vars
-            int w;
-            int h;
 
             //Holen der Benutzer-Eingaben
             w = Convert.ToInt32(tb_width.Text);
@@ -90,7 +87,7 @@ namespace GameOfLife
         /// Geneartionssprung via Button_Click
         private void btn_nextGen_Click(object sender, RoutedEventArgs e)
         {
-            NextGen();
+            NextGen(width,height);
 
         }
 
@@ -156,7 +153,7 @@ namespace GameOfLife
         }
 
         /// Methode für den Generationssprung, berechent welche Zellen Leben und welche Sterben
-        private void NextGen()
+        private void NextGen(int width, int height)
         {
             int[,] num_CellNeighbors = new int[height, width];
 
