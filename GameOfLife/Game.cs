@@ -37,7 +37,6 @@ namespace GameOfLife
 
         public void NextGen()
         {
-            this.gen += 1;
 
         }
 

@@ -27,12 +27,12 @@
         <Label x:Name="lbl_headercountcells" Content="Lebende Zellen" HorizontalAlignment="Left" Margin="12,267,0,0" VerticalAlignment="Top" Width="104" Grid.Column="2" Grid.ColumnSpan="2"/>
         <Label x:Name="lbl_countCells" Content="00" HorizontalAlignment="Left" Margin="101.5,267,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.459,0.532" Width="46" Grid.Column="3"/>
         <Label x:Name="lbl_gamesettings" Content="Spieleinstellung" HorizontalAlignment="Left" Margin="0,314,0,0" VerticalAlignment="Top" Width="168" FontWeight="Bold" Grid.Column="2" Grid.ColumnSpan="2"/>
-        <Button x:Name="btn_play_pause" Content="Play" HorizontalAlignment="Left" Margin="45.5,345,0,0" VerticalAlignment="Top" Width="44" Grid.Column="3"/>
+        <Button x:Name="btn_play_pause" Content="Play" HorizontalAlignment="Left" Margin="45.5,345,0,0" VerticalAlignment="Top" Width="44" Grid.Column="3" Click="btn_play_pause_Click"/>
         <Button x:Name="btn_reset" Content="Reset" HorizontalAlignment="Left" Margin="12,345,0,0" VerticalAlignment="Top" Width="44" Grid.Column="2" Grid.ColumnSpan="2"/>
         <Button x:Name="btn_nextGen" Content="Next" HorizontalAlignment="Left" Margin="101.5,345,0,0" VerticalAlignment="Top" Width="44" RenderTransformOrigin="1.149,-0.812" Grid.Column="3" Click="btn_nextGen_Click"/>
         <Button x:Name="btn_clear" Content="Löschen" HorizontalAlignment="Left" Margin="12,377,0,0" VerticalAlignment="Top" Width="154" Grid.Column="2" Grid.ColumnSpan="2"/>
-        <Label x:Name="lbl_headerhighScore" Content="Highscore" HorizontalAlignment="Left" Margin="0,444,0,0" VerticalAlignment="Top" Width="116" FontWeight="Bold" Grid.Column="2" Grid.ColumnSpan="2"/>
-        <Label x:Name="lbl_highscore" Content="00" HorizontalAlignment="Left" Margin="101.5,444,0,0" VerticalAlignment="Top" Width="46" Grid.Column="3"/>
+        <Label x:Name="lbl_headerhighScore" Content="Highscore" HorizontalAlignment="Left" Margin="0,766,0,0" VerticalAlignment="Top" Width="116" FontWeight="Bold" Grid.Column="2" Grid.ColumnSpan="2"/>
+        <Label x:Name="lbl_highscore" Content="00" HorizontalAlignment="Left" Margin="101,766,0,0" VerticalAlignment="Top" Width="46" Grid.Column="3"/>
 
     </Grid>
 </Window>

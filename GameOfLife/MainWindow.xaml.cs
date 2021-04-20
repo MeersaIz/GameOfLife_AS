@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace GameOfLife
 {
@@ -25,54 +26,53 @@ namespace GameOfLife
 
     public partial class MainWindow : Window
     {
-        //Global Cons/ Vars
+        //Global Vars
         const int width = 16;
         const int height = 9;
         Rectangle[,] Cells = new Rectangle[width, height];
+        DispatcherTimer Clock = new DispatcherTimer();
 
+        /// Main
         public MainWindow()
         {
+            //Konstruktor
             InitializeComponent();
+
+            //Automatische Spielfeld erzeugung (Standart Werte)
+            CreateGameField();
+
+            //Einstellungen für Automatischen spielverlauf (Tickrate)
+            Clock.Interval = TimeSpan.FromSeconds(0.1);
+            Clock.Tick += Clock_Tick;
+
         }
 
+        /// Methoden Aufruf von Uhr-Ticks Für den Automatischen Spielverlauf
+        private void Clock_Tick(object sender, EventArgs e)
+        {
+            NextGen();
+        }
+
+        /// Button zum erzeugen von Benutzerdefinierte Spielfelder
         private void btn_create_Click(object sender, RoutedEventArgs e)
         {
-            //Töte Kinder
-            can_gamefield.Children.Clear();
+            //Vars
+            int width;
+            int height;
 
-            for (int y = 0; y < height; y++)
-            {
-                for (int x = 0; x < width; x++)
-                {
-                    //Erste erstellung der Zellen, Alle tot am anfang
-                        Rectangle Cell = new Rectangle();
+            //Holen der Benutzer-Eingaben
+            width = Convert.ToInt32(tb_width.Text);
+            height = Convert.ToInt32(tb_hight.Text);
 
-                        //Größe der Zellen (-1 für einen Rand)
-                        Cell.Width = can_gamefield.ActualWidth / width - 1.0;
-                        Cell.Height = can_gamefield.ActualHeight / height - 1.0;
+            //Anpassung für Global Array
+            Cells = new Rectangle[width, height];
 
-                        //Farbe setzen (grau = tot)
-                        Cell.Fill = Brushes.Gray;
-
-                        //Zellen der Leinwand(Canvas) hinzufügen
-                        can_gamefield.Children.Add(Cell);
-
-                        //Position der Zellen bestimmen/ setzten
-                        Canvas.SetLeft(Cell, x * can_gamefield.ActualWidth / width);
-                        Canvas.SetTop(Cell, y * can_gamefield.ActualHeight / height);
-
-                    //Positions-Bennung der Zellen
-                    Cells[x, y] = Cell;
-
-                    //Klickfunktion Zelle (tod/lebend) erstellen
-                    Cell.MouseDown += Cell_MouseDown;
-
-                }
-            }
+            //Benutzerdefinierte Spielfeldgröße
+            CreateGameField(width, height);
 
         }
 
-        //Klickfunktion Farbe setzten
+        /// Klickfunktion Farbe setzten
         private void Cell_MouseDown(object sender, MouseButtonEventArgs e)
         {
             //Switch der Fraben (Wenn Grau --> Grün | Wenn Grün --> Grau)
@@ -87,8 +87,76 @@ namespace GameOfLife
 
         }
 
-        //Geneartionssprung via Button_Click
+        /// Geneartionssprung via Button_Click
         private void btn_nextGen_Click(object sender, RoutedEventArgs e)
+        {
+            NextGen();
+
+        }
+
+        /// Start Pause Button
+        private void btn_play_pause_Click(object sender, RoutedEventArgs e)
+        {
+            if (Clock.IsEnabled)
+            {
+                Clock.Stop();
+                btn_play_pause.Content = "Start";
+            }
+            else if (!Clock.IsEnabled)
+            {
+                Clock.Start();
+                btn_play_pause.Content = "Pause";
+            }
+
+        }
+
+
+        /// Methode für die Spielfelderstellung, erzeugt die Zellen (Rechtecke)
+        private void CreateGameField(int w = 16, int h = 9)
+        {
+            //Töte Kinder
+            can_gamefield.Children.Clear();
+
+            //Für die Automatische Spielfeld muss dieser Code einmal laufen
+            //Ohne ihn ist sonst die ActualWidth/Height = 0
+            can_gamefield.Measure(new Size(1.0, 1.0));
+            can_gamefield.Arrange(new Rect(0.0, 0.0, can_gamefield.DesiredSize.Width, can_gamefield.DesiredSize.Height));
+
+            //Zellen Generierung
+            for (int y = 0; y < h; y++)
+            {
+                for (int x = 0; x < w; x++)
+                {
+                    //Erste erstellung der Zellen, Alle tot am anfang
+                    Rectangle Cell = new Rectangle();
+
+                    //Größe der Zellen (-1 für einen Rand)
+                    Cell.Width = can_gamefield.ActualWidth / w - 1.0;
+                    Cell.Height = can_gamefield.ActualHeight / h - 1.0;
+
+                    //Farbe setzen (grau = tot)
+                    Cell.Fill = Brushes.Gray;
+
+                    //Zellen der Leinwand(Canvas) hinzufügen
+                    can_gamefield.Children.Add(Cell);
+
+                    //Position der Zellen bestimmen/ setzten
+                    Canvas.SetLeft(Cell, x * can_gamefield.ActualWidth / w);
+                    Canvas.SetTop(Cell, y * can_gamefield.ActualHeight / h);
+
+                    //Positions-Bennung der Zellen
+                    Cells[x, y] = Cell;
+
+                    //Klickfunktion Zelle (tod/lebend) erstellen
+                    Cell.MouseDown += Cell_MouseDown;
+
+                }
+            }
+
+        }
+
+        /// Methode für den Generationssprung, berechent welche Zellen Leben und welche Sterben
+        private void NextGen()
         {
             int[,] num_CellNeighbors = new int[height, width];
 
@@ -100,11 +168,11 @@ namespace GameOfLife
 
                     //Check Rand des Feldes + Setzten auf andere Seite des Feldes
                     int x_up = x - 1;
-                    if(x_up < 0)
+                    if (x_up < 0)
                     { x_up = width - 1; }
 
                     int x_down = x + 1;
-                    if(x_down >= width)
+                    if (x_down >= width)
                     { x_down = 0; }
 
                     int y_up = y - 1;
@@ -153,6 +221,24 @@ namespace GameOfLife
                 }
             }
 
+
+            //Berechnung Zelle Leben/Sterben
+            for (int y = 0; y < height; y++)
+            {
+                for (int x = 0; x < width; x++)
+                {
+                    if (num_CellNeighbors[y, x] < 2 || num_CellNeighbors[y, x] > 3)
+                    {
+                        Cells[x, y].Fill = Brushes.Gray;
+                    }
+                    else if (num_CellNeighbors[y, x] == 3)
+                    {
+                        Cells[x, y].Fill = Brushes.Green;
+                    }
+
+                }
+            }
         }
+
     }
 }
