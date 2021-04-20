@@ -50,7 +50,7 @@ namespace GameOfLife
         /// Methoden Aufruf von Uhr-Ticks Für den Automatischen Spielverlauf
         private void Clock_Tick(object sender, EventArgs e)
         {
-            NextGen(width,height);
+            NextGen(w,h);
         }
 
         /// Button zum erzeugen von Benutzerdefinierte Spielfelder
@@ -87,7 +87,7 @@ namespace GameOfLife
         /// Geneartionssprung via Button_Click
         private void btn_nextGen_Click(object sender, RoutedEventArgs e)
         {
-            NextGen(width,height);
+            NextGen(w,h);
 
         }
 
