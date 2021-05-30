@@ -27,6 +27,9 @@ namespace GameOfLife
     public partial class MainWindow : Window
     {
         //Global Vars
+        int gen = 0;
+        int score = 0;
+        int count_alive = 0;
         int w = 16;
         int h = 9;
         Rectangle[,] Cells = new Rectangle[16, 9];
@@ -56,7 +59,6 @@ namespace GameOfLife
         /// Button zum erzeugen von Benutzerdefinierte Spielfelder
         private void btn_create_Click(object sender, RoutedEventArgs e) 
         {
-
             //Holen der Benutzer-Eingaben
             w = Convert.ToInt32(tb_width.Text);
             h = Convert.ToInt32(tb_hight.Text);
@@ -111,6 +113,14 @@ namespace GameOfLife
         /// Methode für die Spielfelderstellung, erzeugt die Zellen (Rechtecke)
         private void CreateGameField(int w = 16, int h = 9)
         {
+            //zurücksetzten der gen
+            gen = 0;
+            score = 0;
+            count_alive = 0;
+            lbl_gen.Content = gen.ToString();
+            lbl_highscore.Content = score.ToString();
+            lbl_countCells.Content = count_alive.ToString();
+
             //Töte Kinder
             can_gamefield.Children.Clear();
 
@@ -155,6 +165,9 @@ namespace GameOfLife
         /// Methode für den Generationssprung, berechent welche Zellen Leben und welche Sterben
         private void NextGen(int width, int height)
         {
+            set_score_gen();
+            count_alive = 0;
+
             int[,] num_CellNeighbors = new int[height, width];
 
             for (int y = 0; y < height; y++)
@@ -235,6 +248,27 @@ namespace GameOfLife
 
                 }
             }
+
+            //infos
+            for (int y = 0; y < height; y++)
+            {
+                for (int x = 0; x < width; x++)
+                {
+                    if(Cells[x, y].Fill.Equals(Brushes.Green))
+                    {
+                        count_alive += 1;
+                    }
+                }
+            }
+
+            lbl_countCells.Content = count_alive.ToString();
+
+            //generationsende
+            if(count_alive <= 0)
+            {
+                gen = 0;
+            }
+
         }
 
         /// Löschen Button, Setzte Alle Zellen auf Tod (Grau)
@@ -243,9 +277,54 @@ namespace GameOfLife
             //Für alle Zellen die Farbe Grau setzten
             foreach(Rectangle elements in can_gamefield.Children)
             {
+                gen = 0;
+                count_alive = 0;
+                lbl_gen.Content = gen.ToString();
+                lbl_countCells.Content = count_alive.ToString();
                 elements.Fill = Brushes.Gray;
             }
 
         }
+
+        /// Berechenen des Highscore und setzten der Generation
+        public void set_score_gen()
+        {
+            gen += 1;
+            if(gen > score)
+            {
+                score = gen;
+            }
+            lbl_gen.Content = gen.ToString();
+            lbl_highscore.Content = score.ToString();
+        }
+
+        /// Random Button, Zufälliges befüllen der Zellen
+        private void btn_rndGame_Click(object sender, RoutedEventArgs e)
+        {
+            rnd_game();
+        }
+
+        /// Random Spielffeld Erzeugung
+        public void rnd_game()
+        {
+            Random rnd = new Random();
+            
+            for (int y = 0; y < h; y++)
+            {
+                for (int x = 0; x < w; x++)
+                {
+                    if (rnd.Next(2) == 1)
+                    {
+                        Cells[x, y].Fill = Brushes.Green;
+                    }
+                    else
+                    {
+                        Cells[x, y].Fill = Brushes.Gray;
+                    }
+
+                }
+            }
+        }
+
     }
 }
