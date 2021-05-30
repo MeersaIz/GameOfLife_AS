@@ -319,6 +319,19 @@ namespace GameOfLife
                 }
             }
         }
+
+        /// Berechenen des Highscore und setzten der Generation
+        public void set_score_gen()
+        {
+            gen += 1;
+            if(gen > score)
+            {
+                score = gen;
+            }
+            lbl_gen.Content = gen.ToString();
+            lbl_highscore.Content = score.ToString();
+        }
+
         public void ResizeField(object sender, SizeChangedEventArgs e)
         {
             //can_gamefield.Arrange(new Rect(0.0, 0.0, can_gamefield.DesiredSize.Width, can_gamefield.DesiredSize.Height));
