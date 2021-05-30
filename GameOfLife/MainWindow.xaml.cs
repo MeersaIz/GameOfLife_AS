@@ -34,6 +34,7 @@ namespace GameOfLife
         int h = 9;
         Rectangle[,] Cells = new Rectangle[16, 9];
         DispatcherTimer Clock = new DispatcherTimer();
+        bool fieldSet = false;
 
         /// Main
         public MainWindow()
@@ -48,16 +49,17 @@ namespace GameOfLife
             Clock.Interval = TimeSpan.FromSeconds(0.1);
             Clock.Tick += Clock_Tick;
 
+            fieldSet = true;
         }
 
         /// Methoden Aufruf von Uhr-Ticks Für den Automatischen Spielverlauf
         private void Clock_Tick(object sender, EventArgs e)
         {
-            NextGen(w,h);
+            NextGen(w, h);
         }
 
         /// Button zum erzeugen von Benutzerdefinierte Spielfelder
-        private void btn_create_Click(object sender, RoutedEventArgs e) 
+        private void btn_create_Click(object sender, RoutedEventArgs e)
         {
             //Holen der Benutzer-Eingaben
             w = Convert.ToInt32(tb_width.Text);
@@ -75,7 +77,7 @@ namespace GameOfLife
         private void Cell_MouseDown(object sender, MouseButtonEventArgs e)
         {
             //Switch der Fraben (Wenn Grau --> Grün | Wenn Grün --> Grau)
-            if(((Rectangle)sender).Fill == Brushes.Gray)
+            if (((Rectangle)sender).Fill == Brushes.Gray)
             {
                 ((Rectangle)sender).Fill = Brushes.Green;
             }
@@ -89,7 +91,7 @@ namespace GameOfLife
         /// Geneartionssprung via Button_Click
         private void btn_nextGen_Click(object sender, RoutedEventArgs e)
         {
-            NextGen(w,h);
+            NextGen(w, h);
 
         }
 
@@ -159,7 +161,6 @@ namespace GameOfLife
 
                 }
             }
-
         }
 
         /// Methode für den Generationssprung, berechent welche Zellen Leben und welche Sterben
@@ -193,38 +194,45 @@ namespace GameOfLife
                     if (y_down >= height)
                     { y_down = 0; }
 
+                    // Check für Torus Regeln
+                    if ((x == 0 || x == width || y == 0 || y == height) && !(bool)cb_torus.IsChecked)
+                    {
+                        Cells[x, y].Fill = Brushes.Gray;
+                    }
+                    else
+                    {
+                        //Nachbar Links Oben
+                        if (Cells[x_up, y_up].Fill == Brushes.Green)
+                        { CountNeighbors_alive++; }
 
-                    //Nachbar Links Oben
-                    if (Cells[x_up, y_up].Fill == Brushes.Green)
-                    { CountNeighbors_alive++; }
+                        //Nachbar Mitte Oben
+                        if (Cells[x, y_up].Fill == Brushes.Green)
+                        { CountNeighbors_alive++; }
 
-                    //Nachbar Mitte Oben
-                    if (Cells[x, y_up].Fill == Brushes.Green)
-                    { CountNeighbors_alive++; }
+                        //Nachbar Rechts Oben
+                        if (Cells[x_down, y_up].Fill == Brushes.Green)
+                        { CountNeighbors_alive++; }
 
-                    //Nachbar Rechts Oben
-                    if (Cells[x_down, y_up].Fill == Brushes.Green)
-                    { CountNeighbors_alive++; }
+                        //Nachbar Links Mitte
+                        if (Cells[x_up, y].Fill == Brushes.Green)
+                        { CountNeighbors_alive++; }
 
-                    //Nachbar Links Mitte
-                    if (Cells[x_up, y].Fill == Brushes.Green)
-                    { CountNeighbors_alive++; }
+                        //Nachbar Rechts Mitte
+                        if (Cells[x_down, y].Fill == Brushes.Green)
+                        { CountNeighbors_alive++; }
 
-                    //Nachbar Rechts Mitte
-                    if (Cells[x_down, y].Fill == Brushes.Green)
-                    { CountNeighbors_alive++; }
+                        //Nachbar Links Unten
+                        if (Cells[x_up, y_down].Fill == Brushes.Green)
+                        { CountNeighbors_alive++; }
 
-                    //Nachbar Links Unten
-                    if (Cells[x_up, y_down].Fill == Brushes.Green)
-                    { CountNeighbors_alive++; }
+                        //Nachbar Mitte Unten
+                        if (Cells[x, y_down].Fill == Brushes.Green)
+                        { CountNeighbors_alive++; }
 
-                    //Nachbar Mitte Unten
-                    if (Cells[x, y_down].Fill == Brushes.Green)
-                    { CountNeighbors_alive++; }
-
-                    //Nachbar Rechts Unten
-                    if (Cells[x_down, y_down].Fill == Brushes.Green)
-                    { CountNeighbors_alive++; }
+                        //Nachbar Rechts Unten
+                        if (Cells[x_down, y_down].Fill == Brushes.Green)
+                        { CountNeighbors_alive++; }
+                    }
 
                     //Speichern der Lebenden Nachbarn pro Zelle
                     num_CellNeighbors[y, x] = CountNeighbors_alive;
@@ -245,7 +253,6 @@ namespace GameOfLife
                     {
                         Cells[x, y].Fill = Brushes.Green;
                     }
-
                 }
             }
 
@@ -254,7 +261,7 @@ namespace GameOfLife
             {
                 for (int x = 0; x < width; x++)
                 {
-                    if(Cells[x, y].Fill.Equals(Brushes.Green))
+                    if (Cells[x, y].Fill.Equals(Brushes.Green))
                     {
                         count_alive += 1;
                     }
@@ -264,18 +271,17 @@ namespace GameOfLife
             lbl_countCells.Content = count_alive.ToString();
 
             //generationsende
-            if(count_alive <= 0)
+            if (count_alive <= 0)
             {
                 gen = 0;
             }
-
         }
 
         /// Löschen Button, Setzte Alle Zellen auf Tod (Grau)
         private void btn_clear_Click(object sender, RoutedEventArgs e)
         {
             //Für alle Zellen die Farbe Grau setzten
-            foreach(Rectangle elements in can_gamefield.Children)
+            foreach (Rectangle elements in can_gamefield.Children)
             {
                 gen = 0;
                 count_alive = 0;
@@ -290,7 +296,7 @@ namespace GameOfLife
         public void set_score_gen()
         {
             gen += 1;
-            if(gen > score)
+            if (gen > score)
             {
                 score = gen;
             }
@@ -308,7 +314,7 @@ namespace GameOfLife
         public void rnd_game()
         {
             Random rnd = new Random();
-            
+
             for (int y = 0; y < h; y++)
             {
                 for (int x = 0; x < w; x++)
@@ -321,10 +327,28 @@ namespace GameOfLife
                     {
                         Cells[x, y].Fill = Brushes.Gray;
                     }
-
                 }
             }
         }
+        public void ResizeField(object sender, SizeChangedEventArgs e)
+        {
+            if (fieldSet)
+            {
+                //can_gamefield.Arrange(new Rect(0.0, 0.0, can_gamefield.DesiredSize.Width, can_gamefield.DesiredSize.Height));
+                can_gamefield.Height = MainGrid.ActualHeight - 36;
+                can_gamefield.Width = MainGrid.ActualWidth - 200;
 
+                for (int y = 0; y < h; y++)
+                {
+                    for (int x = 0; x < w; x++)
+                    {
+                        Cells[x,y].Width = can_gamefield.ActualWidth / w - 1.0;
+                        Cells[x,y].Height = can_gamefield.ActualHeight / h - 1.0;
+                        Canvas.SetLeft(Cells[x,y], x * can_gamefield.ActualWidth / w);
+                        Canvas.SetTop(Cells[x,y], y * can_gamefield.ActualHeight / h);
+                    }
+                }
+            }
+        }
     }
 }
