@@ -34,7 +34,6 @@ namespace GameOfLife
         int h = 9;
         Rectangle[,] Cells = new Rectangle[16, 9];
         DispatcherTimer Clock = new DispatcherTimer();
-        bool fieldSet = false;
 
         /// Main
         public MainWindow()
@@ -49,7 +48,6 @@ namespace GameOfLife
             Clock.Interval = TimeSpan.FromSeconds(0.1);
             Clock.Tick += Clock_Tick;
 
-            fieldSet = true;
         }
 
         /// Methoden Aufruf von Uhr-Ticks Für den Automatischen Spielverlauf
@@ -293,16 +291,7 @@ namespace GameOfLife
         }
 
         /// Berechenen des Highscore und setzten der Generation
-        public void set_score_gen()
-        {
-            gen += 1;
-            if (gen > score)
-            {
-                score = gen;
-            }
-            lbl_gen.Content = gen.ToString();
-            lbl_highscore.Content = score.ToString();
-        }
+        
 
         /// Random Button, Zufälliges befüllen der Zellen
         private void btn_rndGame_Click(object sender, RoutedEventArgs e)
@@ -332,21 +321,18 @@ namespace GameOfLife
         }
         public void ResizeField(object sender, SizeChangedEventArgs e)
         {
-            if (fieldSet)
-            {
-                //can_gamefield.Arrange(new Rect(0.0, 0.0, can_gamefield.DesiredSize.Width, can_gamefield.DesiredSize.Height));
-                can_gamefield.Height = MainGrid.ActualHeight - 36;
-                can_gamefield.Width = MainGrid.ActualWidth - 200;
+            //can_gamefield.Arrange(new Rect(0.0, 0.0, can_gamefield.DesiredSize.Width, can_gamefield.DesiredSize.Height));
+            can_gamefield.Height = MainGrid.ActualHeight - 55;
+            can_gamefield.Width = MainGrid.ActualWidth - 250;
 
-                for (int y = 0; y < h; y++)
+            for (int y = 0; y < h; y++)
+            {
+                for (int x = 0; x < w; x++)
                 {
-                    for (int x = 0; x < w; x++)
-                    {
-                        Cells[x,y].Width = can_gamefield.ActualWidth / w - 1.0;
-                        Cells[x,y].Height = can_gamefield.ActualHeight / h - 1.0;
-                        Canvas.SetLeft(Cells[x,y], x * can_gamefield.ActualWidth / w);
-                        Canvas.SetTop(Cells[x,y], y * can_gamefield.ActualHeight / h);
-                    }
+                    Cells[x,y].Width = can_gamefield.ActualWidth / w - 1.0;
+                    Cells[x,y].Height = can_gamefield.ActualHeight / h - 1.0;
+                    Canvas.SetLeft(Cells[x,y], x * can_gamefield.ActualWidth / w);
+                    Canvas.SetTop(Cells[x,y], y * can_gamefield.ActualHeight / h);
                 }
             }
         }
